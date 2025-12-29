@@ -1,0 +1,66 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Medium_clone",
+  "steps": [
+    {
+      "file": "database/migrations/2025_11_13_074436_create_posts_table.php",
+      "description": "In this line and the next I'm not consistint on purpose, just to let you know the different ways to deal with things and not sticking with the default conventions (بنوّعلك)",
+      "line": 20
+    },
+    {
+      "file": "resources/views/components/follow-btn.blade.php",
+      "description": "Updated the JS object(followers) from the server",
+      "line": 12
+    },
+    {
+      "file": "resources/views/components/follow-btn.blade.php",
+      "description": "Controller recieves User Model, JS request doesn't know about models so we provide id to be sent correctly",
+      "line": 9
+    },
+    {
+      "file": "resources/js/app.js",
+      "description": "If this line isn't present JS requests won't work the library is in the './bootstrap' file",
+      "line": 3
+    },
+    {
+      "file": "app/Http/Controllers/ProfileController.php",
+      "description": "There was a nasty bug here:cover image file is not transported in the request\r\n, at first, i was editing the wrong requestForm file, then the file was sent but the model doesn't accept it\r\nthe solution was to disable the massassignment feature, check the legend notes and congrats for this problem solving level up",
+      "line": 38
+    },
+    {
+      "file": "resources/views/posts/show.blade.php",
+      "description": "Notice the beauty of named routes and how to send entire model through them, also look at the corresponding route",
+      "line": 9
+    },
+    {
+      "file": "routes/web.php",
+      "description": "Notice how we can get anything from the sent model in the request query, and still deliver the whole model to the controller",
+      "line": 10
+    },
+    {
+      "file": "resources/views/profile/partials/update-profile-information-form.blade.php",
+      "description": "Please don't forget the \"enctype=\"multipart/form-data\"\" when uploading files",
+      "line": 16
+    },
+    {
+      "file": "resources/views/posts/create.blade.php",
+      "description": "      {{-- @if (Auth::user()->image) // Preview post image feature here (not known yet)\r\n        <div>\r\n          <img src=\"{{}}\" class=\"object-cover max-w-[200px] max-h-full rounded-base mb-4 md:mb-0\">\r\n        </div>\r\n      @endif --}}\r\n",
+      "line": 37
+    },
+    {
+      "file": "app/Models/Post.php",
+      "description": "In case of the time is less than a minute it will return 1 minute",
+      "line": 22
+    },
+    {
+      "file": "app/Http/Controllers/PostController.php",
+      "description": "When retrieving the resource like this \"Category::get()\"\r\nits type is collection, when you apply pagination\r\nit will change to \"Illuminate\\Pagination\\LengthAwarePaginator\" \r\nyou can confirm this by the new method \"$posts->links()\" used \r\nin the view, (dashboard view line 24)",
+      "line": 17
+    },
+    {
+      "file": "app/Http/Controllers/PostController.php",
+      "description": "The magic of the \"user only sees the posts of the ones who follow\" starts here",
+      "line": 21
+    }
+  ]
+}

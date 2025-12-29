@@ -32,3 +32,30 @@ This project demonstrates core backend development skills including authenticati
    ```bash
    git clone https://github.com/ZaherMardini/Medium_clone.git
    cd Medium_clone
+   ```
+
+2. Install PHP dependencies:
+    ```bash
+    composer install
+    ```
+3. Install javascript dependencies:
+    ```bash
+    npm install
+    ```
+
+4. Copy the environment file and generate app key:
+   ```bash
+    cp .env.example .env
+    php artisan key:generate
+    ```
+5. Run database migrations:
+   ```bash
+    php artisan migrate
+   ```
+
+6. Build and serve frontend assets:
+    ```bash
+    npm run dev
+    ```
+    
+7. Serve the backend using Laravel Herd (it will automatically serve at http://localhost).

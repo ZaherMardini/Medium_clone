@@ -7,7 +7,7 @@
       <img src="{{Storage::url($post->user->image)}}" class="w-[90px] h-[90px] rounded-full"/>
         <span class="flex flex-col justify-center text-gray-700">
           <div>
-            <a href="{{route('profile.show', ['user' => $post->user])}}" class="font-bold">{{$username}}</a>
+            <a href="{{route('profile.show', ['user' => $post->user])}}" class="font-bold">{{$user['name']}}</a>
             @auth
             <x-follow-btn :user="$post->user" />
             @endauth

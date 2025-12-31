@@ -9,6 +9,9 @@ class PublicProfileController extends Controller
 {
    public function show(User $user){
       $posts = $user->posts;
+      foreach($posts as $post){
+        $post->load('comments.user');
+      }
       return view('profile.show', ['user' => $user, 'posts' => $posts]);
    }
 }

@@ -1,6 +1,6 @@
-@props(['post', 'contStyle' => ''])
+@props(['post', 'buttonStyle' => ''])
 
-<div class="relative {{ $contStyle }}">
+<div class="relative {{ $buttonStyle }}">
 
     {{-- LIKE + COMMENT BUTTON ROW --}}
     <div class="flex gap-3 items-center">
@@ -89,6 +89,26 @@
             </div>
 
         </div>
+        @can('modify-post', $post)
+        <div class="flex gap-5 ml-50">
+          <div>
+            <a class="text-gray-500" href="{{ route('post.edit', ['post' => $post]) }}">
+             <i class="fa-solid fa-pen"></i>
+            </a>
+          </div>
+          
+          <div>
+            <form action="{{ route('post.delete', ['post' => $post]) }}" method="post">
+              @csrf
+              @method('delete')
+              <button type="submit"><i class="text-gray-500 fa-solid fa-trash"></i></button>
+            </form>
+          </div>
+        </div>
+        @endcan
     </div>
+
+
+
 
 </div>

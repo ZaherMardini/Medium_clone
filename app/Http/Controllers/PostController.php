@@ -6,10 +6,7 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Str;
 
 
@@ -56,15 +53,13 @@ class PostController extends Controller
                       'post' => $post]);
   }
   public function destroy(Post $post){
-    if(!$this->userCanModifyPost($post)){
+    if(Auth::user()->cannot('modify-post', $post)){
       abort(403, 'Unauthorized');
     }
     $post->delete();
     return redirect()->route('dashboard');
   }
   public function update(Post $post, StorePostRequest $request){
-    // dump($request->all());
-    // dump($post->toArray());
     $info = $request->validated();// whatch out for the request type
     if($request->hasFile('file')){
       $img = $request->file('file');
@@ -74,13 +69,10 @@ class PostController extends Controller
       $info['Image'] = $path;
       unset($info['file']);
       $info['user_id'] = Auth::id();
-      // dd($info);
-        $post->update($info);
-        return redirect()->route('dashboard')->with('success', 'Post created successfully!');
-    }else{
-      return "Image not loaded";
+      $post->update($info);
+      return redirect()->route('dashboard')->with('success', 'Post created successfully!');
     }
-
+    return "Image not loaded";
   }
   public function store(StorePostRequest $request)
   { // super important to review and understand
@@ -95,9 +87,8 @@ class PostController extends Controller
         $info['user_id'] = Auth::id();
         Post::create($info);
         return redirect()->route('dashboard')->with('success', 'Post created successfully!');
-    }else{
-      return "Image not loaded";
     }
+    return "Image not loaded";
   }
 
   public function postBycategory(Category $category){// Duplicated the index methode here 
@@ -123,10 +114,10 @@ class PostController extends Controller
     return view('posts.show', ['posts' => $posts]);
   }
 
-  public function show(string $username, Post $post)
+  public function show(User $user, Post $post)
   {
     $post->load('comments.user');
-    return view('posts.show', ['username' => $username, 'post' => $post]);
+    return view('posts.show', ['user' => $user, 'post' => $post]);
   }
 
 }

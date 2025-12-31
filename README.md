@@ -8,7 +8,7 @@ This project demonstrates core backend development skills including authenticati
 - **Laravel** with Blade templates (server-rendered)
 - **SQLite** database
 - **Laravel Breeze** starter kit for authentication
-- **Tailwind CSS v4** for styling
+- **Tailwind CSS v4 with flowbite components** for styling
 - **Alpine.js** with Axios for interactivity
 - **Laravel Herd (Nginx)** to serve the backend
 - **Vite** for frontend asset bundling

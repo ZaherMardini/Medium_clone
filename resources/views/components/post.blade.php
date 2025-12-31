@@ -1,5 +1,4 @@
 @props(['post', 'link'])
-
 <div class="bg-[#0f1828] border border-gray-700 rounded-xl p-4 flex gap-4">
 
     {{-- LEFT SIDE: TEXT --}}
@@ -30,9 +29,24 @@
         </div>
     </div>
 
+    
+    @can('modify-post', $post)
+    <div>
+      <a class="text-white" href="{{ route('post.edit', ['post' => $post]) }}">edit</a>
+    </div>
+    
+    <div>
+      <form action="{{ route('post.delete', ['post' => $post]) }}" method="post">
+        @csrf
+        @method('delete')
+        <x-primary-button>delete</x-primary-button>
+      </form>
+    </div>
+    @endcan
+    
 
     {{-- RIGHT SIDE: IMAGE --}}
-    <div class="w-48 flex-shrink-0">
+    <div class="w-48 shrink-0">
         <img src="{{ Storage::url($post->Image) }}"
              class="rounded-lg object-cover w-full h-full">
     </div>

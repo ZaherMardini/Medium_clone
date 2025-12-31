@@ -33,8 +33,8 @@ Route::middleware('auth')->group(function () {
   Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
   Route::get('/post/{post:slug}/edit', [PostController::class, 'edit'])->name('post.edit');
-  Route::post('/post/{post:slug}', [PostController::class, 'update'])->name('post.update');
-  Route::delete('/post/{post:slug}', [PostController::class, 'destroy'])->name('post.delete');
+  Route::post('/post/{post}', [PostController::class, 'update'])->name('post.update');
+  Route::delete('/post/{post}', [PostController::class, 'destroy'])->name('post.delete');
 });
 
 require __DIR__.'/auth.php';

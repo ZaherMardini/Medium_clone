@@ -3,9 +3,10 @@
 <div class="relative {{ $buttonStyle }}">
 
     {{-- LIKE + COMMENT BUTTON ROW --}}
-    <div class="flex gap-3 items-center">
+    <div class="flex justify-between">
 
         {{-- LIKE --}}
+      <div class="like_comment flex gap-3 items-center">
         <div
             x-data="{
                 isAuthenticated: @js(Auth::check()),
@@ -89,8 +90,9 @@
             </div>
 
         </div>
+        </div>
         @can('modify-post', $post)
-        <div class="flex gap-5 ml-50">
+        <div class="edit_delete flex gap-5">
           <div>
             <a class="text-gray-500" href="{{ route('post.edit', ['post' => $post]) }}">
              <i class="fa-solid fa-pen"></i>

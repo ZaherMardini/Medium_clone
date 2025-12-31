@@ -7,10 +7,6 @@
       <div class="text-[60px] text-gray-500 font-bold ml-5 mt-5">
          {{$user->name}}
       </div>
-      <x-tabs.tab> 
-         <x-tabs.option>All posts</x-tabs.option>
-         <x-tabs.option :link="route('post.pop', ['user' => $user])">Popular posts</x-tabs.option>
-      </x-tabs.tab>
       <div class="posts">
          @foreach ($posts as $post)
         <div class="post-likes">

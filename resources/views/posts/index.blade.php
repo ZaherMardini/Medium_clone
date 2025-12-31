@@ -6,7 +6,7 @@
 
     <div class="post_container flex justify-center flex-wrap">
       @forelse ($posts as $post)
-        <x-post 
+        <x-post class="mb-5"
         :post="$post"
         :link="route('post.show', ['user'=> $post->user->name, 'post' => $post])">
         <x-like-comment-btn :post="$post"/>

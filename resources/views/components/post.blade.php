@@ -1,5 +1,5 @@
 @props(['post', 'link'])
-<div class="bg-[#0f1828] border border-gray-700 rounded-xl p-4 flex gap-4">
+<div class="bg-[#0f1828] border border-gray-700 rounded-xl p-4 flex gap-4 mb-5">
 
     {{-- LEFT SIDE: TEXT --}}
     <div class="flex-1 flex flex-col justify-between">

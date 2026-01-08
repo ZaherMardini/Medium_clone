@@ -6,24 +6,21 @@ use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
+use App\Services\PostService;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Str;
 
 
 class PostController extends Controller
 {
+  protected $service;
+  public function __construct(PostService $service)
+  {
+    $this->service = $service;
+  }
   public function index()
   {
-    $user = Auth::user();
-    $posts = Post::with(['Category', 'User' ,'comments', 'likes', 'comments.user']);
-    if($user){
-      $ids = $user->following()->pluck('user_id');
-      $ids->add(Auth::id()); // if this line is missing, the user own posts won't showup
-      $posts->whereIn('user_id', $ids);
-    }
-
+    $posts = $this->service->index();
     $posts = $posts->latest()->simplePaginate(5);
-    
     return view('posts.index', ['posts' => $posts]);
   }
 
@@ -31,10 +28,6 @@ class PostController extends Controller
   {
     $c = Category::get();
     return view('posts.create', ['categories' => $c]);
-  }
-  private function userCanModifyPost(Post $post){
-
-    return Auth::id() == $post->user['id'];
   }
   public function edit(Post $post)
   {
@@ -56,64 +49,28 @@ class PostController extends Controller
     return redirect()->route('dashboard');
   }
   public function update(Post $post, StorePostRequest $request){
-    $info = $request->validated();// whatch out for the request type
-    if($request->hasFile('file')){
-      $img = $request->file('file');
-      $imgname = Str::uuid() . '.' . $img->getClientOriginalExtension();
-      $path = $img->storeAs('images', $imgname, 'public');
-      $info['slug'] = Str::slug($request->title);
-      $info['Image'] = $path;
-      unset($info['file']);
-      $info['user_id'] = Auth::id();
-      $post->update($info);
-      return redirect()->route('dashboard')->with('success', 'Post created successfully!');
-    }
-    return "Image not loaded";
+    $this->service->setRequest($request);
+    $this->service->update($post);
+    return redirect()->route('dashboard');
   }
   public function store(StorePostRequest $request)
-  { // super important to review and understand
-    $info = $request->validated();// whatch out for the request type
-    if($request->hasFile('file')){
-        $img = $request->file('file');
-        $imgname = Str::uuid() . '.' . $img->getClientOriginalExtension();
-        $path = $img->storeAs('images', $imgname, 'public');
-        $info['slug'] = Str::slug($request->title);
-        $info['Image'] = $path;
-        unset($info['file']);
-        $info['user_id'] = Auth::id();
-        Post::create($info);
-        return redirect()->route('dashboard')->with('success', 'Post created successfully!');
-    }
-    return "Image not loaded";
+  { 
+    $this->service->setRequest($request);
+    $this->service->store();
+    return redirect()->route('dashboard');
   }
 
-  public function postBycategory(Category $category){// Duplicated the index methode here 
-    if($category->id == 1){
+  public function postBycategory(Category $category){ 
+    if($category['id'] == 1){
       return redirect()->route('dashboard');
     }
-    $user = Auth::user();
-    $query = Post::with(['Category','User','comments']);
-    if($user){
-      $ids = $user->following()->pluck('user_id');
-      $ids->add(Auth::id()); // if not for this line the user won't be able to see his own posts
-      $query->whereIn('user_id', $ids);
-    }
-    $query->where('category_id', $category->id);
-    $posts = $query->latest()->simplePaginate(5);
-    
+    $posts = $this->service->viewByCategory($category);
+    $posts = $posts->latest()->simplePaginate(5);
     return view('posts.index', ['posts' => $posts]);
   }
-
-  public function popularPosts(User $user){
-    $posts = Post::with(['Category','User','comments', 'likes','comments.user']);
-    $posts->orderBy('likes');
-    return view('posts.show', ['posts' => $posts]);
-  }
-
   public function show(User $user, Post $post)
   {
     $post->load('comments.user');
     return view('posts.show', ['user' => $user, 'post' => $post]);
   }
-
 }

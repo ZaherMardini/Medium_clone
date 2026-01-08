@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use App\Http\Requests\ProfileUpdateRequest;
-use Illuminate\Support\Str;
 
 class ProfileService{
   protected $request;
@@ -32,8 +31,3 @@ class ProfileService{
     $request->user()->save();
   }
 }
-
-      // if($request->file('image')){
-      //   $productProps['image_path'] = $request->file('image')->store('products_images', 'public');
-      //   unset($productProps['image']);
-      // }

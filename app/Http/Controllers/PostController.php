@@ -38,10 +38,6 @@ class PostController extends Controller
   }
   public function edit(Post $post)
   {
-    // dd($post);
-    // if(Gate::denies('modify-post', $post)){
-    //     abort(403, 'Unauthorized');
-    // }
     if(Auth::user()->cannot('modify-post', $post)){
         abort(403, 'Unauthorized');
     }
